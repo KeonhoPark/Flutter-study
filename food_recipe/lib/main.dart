@@ -13,6 +13,42 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<Map<String, dynamic>> foodData = [
+      {"category": "수제버거", "imgUrl": "https://i.ibb.co/VtK43vv/burger.jpg"},
+      {
+        "category": "건강식",
+        "imgUrl": "https://i.ibb.co/2KbN5pV/soup.jpg",
+      },
+      {
+        "category": "한식",
+        "imgUrl": "https://i.ibb.co/KXJD0rN/korean-meals.jpg",
+      },
+      {
+        "category": "디저트",
+        "imgUrl": "https://i.ibb.co/9Yn3t0w/tiramisu.jpg",
+      },
+      {
+        "category": "피자",
+        "imgUrl": "https://i.ibb.co/P9nKtt2/pizza.jpg",
+      },
+      {
+        "category": "볶음밥",
+        "imgUrl": "https://i.ibb.co/3svVzM1/shakshuka.jpg",
+      },
+    ];
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -34,22 +70,63 @@ class MyApp extends StatelessWidget {
                 ))
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: "상품을 입력해주세요.",
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black),
-              ),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  print("search");
-                },
-                icon: Icon(Icons.search),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "상품을 입력해주세요.",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      print("search");
+                    },
+                    icon: Icon(Icons.search),
+                  ),
+                ),
               ),
             ),
-          ),
+            Expanded(
+                child: ListView.builder(
+                    itemCount: foodData.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic> data = foodData[index];
+                      String category = data["category"];
+                      dynamic imgUrl = data["imgUrl"];
+
+                      return Card(
+                        margin: const EdgeInsets.all(8),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.network(
+                              imgUrl,
+                              width: double.infinity,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: 120,
+                              color: Colors.black.withOpacity(0.5),
+                              child: Text(
+                                category,
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }))
+          ],
         ),
       ),
     );
