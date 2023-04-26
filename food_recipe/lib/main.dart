@@ -1,5 +1,6 @@
 // import 'dart:html';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,6 +24,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> menu = ['구매내역', '저장한 레시피'];
+
+    final List<String> bannerImages = [
+      "https://i.ibb.co/Q97cmkg/sale-event-banner1.jpg",
+      "https://i.ibb.co/GV78j68/sale-event-banner2.jpg",
+      "https://i.ibb.co/R3P3RHw/sale-event-banner3.jpg",
+      "https://i.ibb.co/LRb1VYs/sale-event-banner4.jpg"
+    ];
+
     List<Map<String, dynamic>> foodData = [
       {"category": "수제버거", "imgUrl": "https://i.ibb.co/VtK43vv/burger.jpg"},
       {
@@ -132,6 +142,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 DrawerHeader(
+                    margin: EdgeInsets.all(0),
                     decoration: BoxDecoration(color: Colors.amber),
                     child: SizedBox(
                       width: double.infinity,
@@ -160,7 +171,46 @@ class HomePage extends StatelessWidget {
                           )
                         ],
                       ),
-                    ))
+                    )),
+                AspectRatio(
+                    aspectRatio: 12 / 4,
+                    child: PageView.builder(
+                      itemCount: bannerImages.length,
+                      itemBuilder: (context, index) {
+                        String bannerImage = bannerImages[index];
+                        return Image.network(bannerImage);
+                      },
+                    )),
+                ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  itemCount: menu.length,
+                  itemBuilder: (context, index) {
+                    String m = menu[index];
+                    print(m);
+                    return Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            m,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              print(m);
+                            },
+                            icon: Icon(
+                              CupertinoIcons.arrow_right,
+                              color: Colors.black,
+                            ))
+                      ],
+                    );
+                  },
+                ),
               ],
             ),
           ),
