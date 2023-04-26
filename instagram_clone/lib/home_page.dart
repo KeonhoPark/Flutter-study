@@ -8,6 +8,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> images = [
+      "https://cdn2.thecatapi.com/images/bi.jpg",
+      "https://cdn2.thecatapi.com/images/63g.jpg",
+      "https://cdn2.thecatapi.com/images/a3h.jpg",
+      "https://cdn2.thecatapi.com/images/a9m.jpg",
+      "https://cdn2.thecatapi.com/images/aph.jpg",
+      "https://cdn2.thecatapi.com/images/1rd.jpg",
+      "https://cdn2.thecatapi.com/images/805.gif",
+    ];
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -33,9 +42,10 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: ListView.builder(
-          itemCount: 10,
+          itemCount: images.length,
           itemBuilder: (context, index) {
-            return Feed();
+            String image = images[index];
+            return Feed(imgUrl: image);
           },
         ));
   }

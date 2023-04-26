@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class Feed extends StatefulWidget {
   const Feed({
     super.key,
+    required this.imgUrl,
   });
+
+  final String imgUrl;
 
   @override
   State<Feed> createState() => _FeedState();
@@ -20,7 +23,7 @@ class _FeedState extends State<Feed> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Image.network(
-          "https://i.ibb.co/YjjLCS7/cat.png",
+          widget.imgUrl,
           height: 400,
           width: double.infinity,
           fit: BoxFit.cover,
