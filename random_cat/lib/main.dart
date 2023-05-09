@@ -1,12 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  //main() 에서 async 쓰려면 필요
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //shared_preferences 인스턴스 생성
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => CatService()),
+        ChangeNotifierProvider(create: (context) => CatService(prefs)),
       ],
       child: const MyApp(),
     ),
@@ -33,20 +40,24 @@ class CatService extends ChangeNotifier {
   //좋아요 사진
   List<String> favoriteImages = [];
 
-  CatService() {
+  //SharedPreferences 인스턴스
+  SharedPreferences prefs;
+
+  CatService(this.prefs) {
     getRandomCatImages();
+
+    // favorites로 저장된 favoriteImages를 가져오기
+    // 저장된 favorites가 없을경우 null이 반환되므로 그때는 빈 배열을 할당.
+    favoriteImages = prefs.getStringList("favorites") ?? [];
   }
 
   // 랜덤 고양이 사진 API 호출
   void getRandomCatImages() async {
     Response result = await Dio().get(
         "https://api.thecatapi.com/v1/images/search?limit=10&mime_types=jpg");
-    print(result.data);
 
     for (var i = 0; i < result.data.length; i++) {
       var map = result.data[i];
-      print(map);
-      print(map['url']);
       catImages.add(map['url']);
     }
     notifyListeners();
@@ -59,6 +70,10 @@ class CatService extends ChangeNotifier {
     } else {
       favoriteImages.add(catImage);
     }
+
+    // favoriteImages를 favorites라는 이름으로 저장하기
+    prefs.setStringList("favorites", favoriteImages);
+
     //새로고침
     notifyListeners();
   }
