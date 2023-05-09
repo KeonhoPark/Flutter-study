@@ -47,7 +47,7 @@ class CatService extends ChangeNotifier {
     getRandomCatImages();
 
     // favorites로 저장된 favoriteImages를 가져오기
-    // 저장된 favorites가 없을경우 null이 반환되므로 그때는 빈 배열을 할당.
+    // 저장된 favorites가 없을경우 null이 반환되므로 그때는 빈 배열을 할당함.
     favoriteImages = prefs.getStringList("favorites") ?? [];
   }
 
